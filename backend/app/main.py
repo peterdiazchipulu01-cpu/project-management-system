@@ -3,11 +3,27 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from sqlalchemy import text
 from .database import engine, Base
 from . import models  # noqa: F401 — ensures all models are registered before create_all
 from .routers import projects, tasks, users
 
 Base.metadata.create_all(bind=engine)
+
+_MIGRATIONS = [
+    "ALTER TABLE projects ADD COLUMN start_date DATE",
+    "ALTER TABLE projects ADD COLUMN end_date DATE",
+    "ALTER TABLE tasks ADD COLUMN start_date DATE",
+    "ALTER TABLE tasks ADD COLUMN progress INTEGER DEFAULT 0",
+]
+
+with engine.connect() as _conn:
+    for _stmt in _MIGRATIONS:
+        try:
+            _conn.execute(text(_stmt))
+            _conn.commit()
+        except Exception:
+            pass
 
 app = FastAPI(title="Project Management System")
 

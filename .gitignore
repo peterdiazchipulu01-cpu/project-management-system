@@ -28,4 +28,5 @@ Thumbs.db
 .idea/
 
 # Claude
-.claude/settings.local.json
+.claude/
+**/.claude/
