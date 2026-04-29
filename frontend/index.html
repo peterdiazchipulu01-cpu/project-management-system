@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Management System</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+  <h1>Project Management System</h1>
+  <button id="btn-manage-users">Team Members</button>
+</header>
+
+<div class="container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span>Projects</span>
+      <button id="btn-new-project">+ New</button>
+    </div>
+    <ul id="project-list"></ul>
+  </aside>
+
+  <main class="main-content">
+    <div id="no-project-msg">Select or create a project to get started.</div>
+
+    <div id="project-board" class="hidden">
+      <div class="board-header">
+        <h2 id="project-title"></h2>
+        <div class="btn-group">
+          <button id="btn-new-task" class="btn-primary">+ Add Task</button>
+          <button id="btn-edit-project" class="btn-secondary">Edit</button>
+          <button id="btn-delete-project" class="btn-danger">Delete</button>
+        </div>
+      </div>
+
+      <div class="kanban-board">
+        <div class="column" data-status="todo">
+          <h3>To Do</h3>
+          <div class="task-list" id="col-todo"></div>
+        </div>
+        <div class="column" data-status="in_progress">
+          <h3>In Progress</h3>
+          <div class="task-list" id="col-in-progress"></div>
+        </div>
+        <div class="column" data-status="done">
+          <h3>Done</h3>
+          <div class="task-list" id="col-done"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Project Modal -->
+<div id="modal-project" class="modal hidden">
+  <div class="modal-content">
+    <h2 id="modal-project-title">New Project</h2>
+    <form id="form-project">
+      <label>Name
+        <input type="text" name="name" required placeholder="e.g. Website Redesign">
+      </label>
+      <label>Description
+        <textarea name="description" placeholder="Optional description"></textarea>
+      </label>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel btn-secondary">Cancel</button>
+        <button type="submit" class="btn-primary">Save Project</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Task Modal -->
+<div id="modal-task" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modal-task-title">New Task</h2>
+      <button id="btn-delete-task" class="btn-danger hidden">Delete Task</button>
+    </div>
+    <form id="form-task">
+      <label>Title
+        <input type="text" name="title" required placeholder="e.g. Design homepage mockup">
+      </label>
+      <label>Description
+        <textarea name="description" placeholder="Optional details"></textarea>
+      </label>
+      <div class="form-row">
+        <label>Status
+          <select name="status">
+            <option value="todo">To Do</option>
+            <option value="in_progress">In Progress</option>
+            <option value="done">Done</option>
+          </select>
+        </label>
+        <label>Priority
+          <select name="priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </label>
+      </div>
+      <div class="form-row">
+        <label>Due Date
+          <input type="date" name="due_date">
+        </label>
+        <label>Assignee
+          <select name="assignee_id">
+            <option value="">— Unassigned —</option>
+          </select>
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel btn-secondary">Cancel</button>
+        <button type="submit" class="btn-primary">Save Task</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Users Modal -->
+<div id="modal-users" class="modal hidden">
+  <div class="modal-content">
+    <h2>Team Members</h2>
+    <ul id="user-list"></ul>
+    <form id="form-user">
+      <div class="form-row">
+        <input type="text" name="name" placeholder="Full name" required>
+        <input type="email" name="email" placeholder="Email address" required>
+        <button type="submit" class="btn-primary">Add</button>
+      </div>
+    </form>
+    <div class="form-actions" style="margin-top:1rem">
+      <button type="button" class="btn-cancel btn-secondary">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
