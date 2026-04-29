@@ -30,5 +30,6 @@ class TaskUpdate(BaseModel):
 class TaskResponse(TaskBase):
     id: int
     created_at: datetime
+    assignee_name: Optional[str] = None
 
     model_config = {"from_attributes": True}

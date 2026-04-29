@@ -86,20 +86,88 @@ async function renderTasks() {
     const colId = colMap[t.status] ?? 'col-todo';
     document.getElementById(colId).appendChild(makeTaskCard(t));
   });
+  setupColumnDragListeners();
+  updateTaskCounts();
 }
 
 function makeTaskCard(task) {
   const card = document.createElement('div');
   card.className = 'task-card';
-  const due = task.due_date ? `<span>Due ${task.due_date.substring(0, 10)}</span>` : '';
+  card.draggable = true;
+  card.dataset.taskId = task.id;
+  card.dataset.priority = task.priority;
+  const due = task.due_date ? `<span>📅 ${task.due_date.substring(0, 10)}</span>` : '';
+  const assignee = task.assignee_name ? `<span>👤 ${task.assignee_name}</span>` : '';
   card.innerHTML = `
     <h4>${esc(task.title)}</h4>
     <div class="task-meta">
       <span class="badge badge-${task.priority}">${task.priority}</span>
       ${due}
+      ${assignee}
     </div>`;
+
   card.addEventListener('click', () => openEditTaskModal(task));
+  card.addEventListener('dragstart', handleDragStart);
+  card.addEventListener('dragend', handleDragEnd);
+
   return card;
+}
+
+function handleDragStart(e) {
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('taskId', e.target.closest('.task-card').dataset.taskId);
+  e.target.closest('.task-card').classList.add('dragging');
+}
+
+function handleDragEnd(e) {
+  e.target.closest('.task-card').classList.remove('dragging');
+  document.querySelectorAll('.task-list').forEach(list => list.classList.remove('drag-over'));
+}
+
+function setupColumnDragListeners() {
+  document.querySelectorAll('.task-list').forEach(list => {
+    list.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      list.classList.add('drag-over');
+    });
+
+    list.addEventListener('dragleave', () => {
+      list.classList.remove('drag-over');
+    });
+
+    list.addEventListener('drop', e => {
+      e.preventDefault();
+      const taskId = parseInt(e.dataTransfer.getData('taskId'), 10);
+      const newStatus = list.dataset.status;
+      updateTaskStatus(taskId, newStatus);
+      list.classList.remove('drag-over');
+    });
+  });
+}
+
+async function updateTaskStatus(taskId, newStatus) {
+  try {
+    const task = document.querySelector(`[data-task-id="${taskId}"]`).closest('.task-card');
+    const currentTask = Array.from(document.querySelectorAll('.task-card'))
+      .find(card => card.dataset.taskId == taskId);
+
+    if (currentTask) {
+      const taskObj = { status: newStatus };
+      await api.tasks.update(taskId, taskObj);
+      await renderTasks();
+      updateTaskCounts();
+    }
+  } catch (e) { showError(e.message); }
+}
+
+function updateTaskCounts() {
+  const colMap = { todo: 'col-todo', in_progress: 'col-in-progress', done: 'col-done' };
+  Object.entries(colMap).forEach(([status, colId]) => {
+    const count = document.getElementById(colId).children.length;
+    const badgeEl = document.querySelector(`[data-status="${status}"] .task-count`);
+    if (badgeEl) badgeEl.textContent = count;
+  });
 }
 
 // ── Project modal ────────────────────────────────────────────────
@@ -273,6 +341,7 @@ function closeAllModals() {
 // ── Bootstrap ─────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
   await renderProjects();
+  setupColumnDragListeners();
 
   // Buttons
   document.getElementById('btn-new-project').addEventListener('click', openNewProjectModal);
