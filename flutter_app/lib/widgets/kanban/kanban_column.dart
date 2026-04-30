@@ -96,7 +96,7 @@ class KanbanColumn extends ConsumerWidget {
                             color: Theme.of(context)
                                 .colorScheme
                                 .onSurface
-                                .withOpacity(0.35),
+                                .withValues(alpha: 0.35),
                           ),
                         ),
                       )

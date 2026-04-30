@@ -10,15 +10,15 @@ class PriorityBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bg, fg) = switch (priority) {
       TaskPriority.low => (
-          AppTheme.priorityLow.withOpacity(0.15),
+          AppTheme.priorityLow.withValues(alpha: 0.15),
           AppTheme.priorityLow
         ),
       TaskPriority.medium => (
-          AppTheme.priorityMedium.withOpacity(0.15),
+          AppTheme.priorityMedium.withValues(alpha: 0.15),
           AppTheme.priorityMedium
         ),
       TaskPriority.high => (
-          AppTheme.priorityHigh.withOpacity(0.15),
+          AppTheme.priorityHigh.withValues(alpha: 0.15),
           AppTheme.priorityHigh
         ),
     };

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/project.dart';
-import '../providers/project_provider.dart';
 import '../providers/task_provider.dart';
 import '../widgets/kanban/kanban_view.dart';
 import '../widgets/gantt/gantt_view.dart';
 import '../widgets/dialogs/task_dialog.dart';
 import '../widgets/dialogs/project_dialog.dart';
-import '../widgets/common/toast_service.dart';
 
 class ProjectBoardScreen extends ConsumerStatefulWidget {
   final Project project;
@@ -32,41 +30,6 @@ class _ProjectBoardScreenState extends ConsumerState<ProjectBoardScreen>
   void dispose() {
     _tabController.dispose();
     super.dispose();
-  }
-
-  Future<void> _deleteProject() async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Delete Project'),
-        content: Text(
-            'Delete "${widget.project.name}" and all its tasks?'),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancel')),
-          FilledButton(
-            style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFFEF4444)),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-    if (confirm != true || !mounted) return;
-    try {
-      await ref
-          .read(projectServiceProvider)
-          .deleteProject(widget.project.id);
-      ref.read(selectedProjectIdProvider.notifier).state = null;
-      await ref.read(projectsProvider.notifier).refresh();
-      if (mounted) {
-        ToastService.showSuccess(context, 'Project deleted');
-      }
-    } catch (e) {
-      if (mounted) ToastService.showError(context, 'Error: $e');
-    }
   }
 
   @override
@@ -101,7 +64,7 @@ class _ProjectBoardScreenState extends ConsumerState<ProjectBoardScreen>
                               color: Theme.of(context)
                                   .colorScheme
                                   .onSurface
-                                  .withOpacity(0.55),
+                                  .withValues(alpha: 0.55),
                             ),
                       ),
                   ],
@@ -112,12 +75,6 @@ class _ProjectBoardScreenState extends ConsumerState<ProjectBoardScreen>
                 tooltip: 'Edit project',
                 onPressed: () => showProjectDialog(context,
                     project: widget.project),
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete_outline,
-                    color: Color(0xFFEF4444)),
-                tooltip: 'Delete project',
-                onPressed: _deleteProject,
               ),
               const SizedBox(width: 4),
               FilledButton.icon(

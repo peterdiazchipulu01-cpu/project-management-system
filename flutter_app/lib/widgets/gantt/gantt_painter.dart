@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 import '../../models/task.dart';
 import '../../core/app_theme.dart';
 
@@ -33,7 +33,7 @@ class GanttPainter extends CustomPainter {
 
   void _drawWeekendHighlights(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = (isDark ? Colors.white : Colors.black).withOpacity(0.03);
+      ..color = (isDark ? Colors.white : Colors.black).withValues(alpha: 0.03);
     for (int i = 0; i < days.length; i++) {
       final wd = days[i].weekday;
       if (wd == DateTime.saturday || wd == DateTime.sunday) {
@@ -45,7 +45,7 @@ class GanttPainter extends CustomPainter {
 
   void _drawGrid(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = (isDark ? Colors.white : Colors.black).withOpacity(0.07)
+      ..color = (isDark ? Colors.white : Colors.black).withValues(alpha: 0.07)
       ..strokeWidth = 1;
     for (int i = 0; i <= days.length; i++) {
       final x = i * dayWidth;
@@ -72,7 +72,7 @@ class GanttPainter extends CustomPainter {
 
     if (todayIdx >= 0) {
       final todayBg = Paint()
-        ..color = AppTheme.primary.withOpacity(0.12);
+        ..color = AppTheme.primary.withValues(alpha: 0.12);
       canvas.drawRect(
           Rect.fromLTWH(
               todayIdx * dayWidth, 0, dayWidth, headerHeight),
@@ -123,7 +123,7 @@ class GanttPainter extends CustomPainter {
           headerHeight + i * rowHeight + (rowHeight - _barHeight) / 2;
 
       final barPaint = Paint()
-        ..color = AppTheme.primary.withOpacity(0.22);
+        ..color = AppTheme.primary.withValues(alpha: 0.22);
       canvas.drawRRect(
           RRect.fromLTRBR(clampedLeft, top, clampedRight, top + _barHeight,
               const Radius.circular(_barRadius)),
@@ -135,7 +135,7 @@ class GanttPainter extends CustomPainter {
         final clampedPRight =
             (left + progressW).clamp(clampedLeft, clampedRight);
         final progressPaint = Paint()
-          ..color = AppTheme.primary.withOpacity(0.65);
+          ..color = AppTheme.primary.withValues(alpha: 0.65);
         canvas.drawRRect(
             RRect.fromLTRBR(clampedLeft, top, clampedPRight,
                 top + _barHeight, const Radius.circular(_barRadius)),

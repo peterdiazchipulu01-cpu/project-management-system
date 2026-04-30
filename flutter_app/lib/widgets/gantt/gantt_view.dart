@@ -98,7 +98,7 @@ class _GanttViewState extends State<GanttView> {
         child: Text(
           'No tasks to display in Gantt view',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.45),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.45),
           ),
         ),
       );

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../models/task.dart';
+import 'gantt_painter.dart';
 
 class GanttSidebar extends StatelessWidget {
   final List<Task> tasks;
   final ScrollController scrollController;
-
-  static const rowHeight = 40.0;
-  static const headerHeight = 44.0;
 
   const GanttSidebar({
     super.key,
@@ -17,11 +15,11 @@ class GanttSidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final borderColor =
-        Theme.of(context).colorScheme.outline.withOpacity(0.15);
+        Theme.of(context).colorScheme.outline.withValues(alpha: 0.15);
     return Column(
       children: [
         Container(
-          height: headerHeight,
+          height: GanttPainter.headerHeight,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surfaceContainerLow,
@@ -41,11 +39,11 @@ class GanttSidebar extends StatelessWidget {
             controller: scrollController,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: tasks.length,
-            itemExtent: rowHeight,
+            itemExtent: GanttPainter.rowHeight,
             itemBuilder: (context, i) {
               final task = tasks[i];
               return Container(
-                height: rowHeight,
+                height: GanttPainter.rowHeight,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   border: Border(
@@ -62,7 +60,7 @@ class GanttSidebar extends StatelessWidget {
                         color: Theme.of(context)
                             .colorScheme
                             .primary
-                            .withOpacity(0.6),
+                            .withValues(alpha: 0.6),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -84,7 +82,7 @@ class GanttSidebar extends StatelessWidget {
                             color: Theme.of(context)
                                 .colorScheme
                                 .onSurface
-                                .withOpacity(0.45),
+                                .withValues(alpha: 0.45),
                           ),
                     ),
                   ],

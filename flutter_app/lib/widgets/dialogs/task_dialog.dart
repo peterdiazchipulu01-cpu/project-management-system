@@ -199,7 +199,7 @@ class _TaskDialogState extends ConsumerState<_TaskDialog> {
                   children: [
                     Expanded(
                       child: DropdownButtonFormField<TaskStatus>(
-                        value: _status,
+                        initialValue: _status,
                         decoration:
                             const InputDecoration(labelText: 'Status'),
                         items: TaskStatus.values
@@ -213,7 +213,7 @@ class _TaskDialogState extends ConsumerState<_TaskDialog> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: DropdownButtonFormField<TaskPriority>(
-                        value: _priority,
+                        initialValue: _priority,
                         decoration:
                             const InputDecoration(labelText: 'Priority'),
                         items: TaskPriority.values
@@ -247,7 +247,7 @@ class _TaskDialogState extends ConsumerState<_TaskDialog> {
                 const SizedBox(height: 12),
                 if (users.isNotEmpty) ...[
                   DropdownButtonFormField<int?>(
-                    value: _assigneeId,
+                    initialValue: _assigneeId,
                     decoration:
                         const InputDecoration(labelText: 'Assignee'),
                     items: [

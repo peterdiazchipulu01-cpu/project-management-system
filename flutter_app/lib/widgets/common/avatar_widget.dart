@@ -11,7 +11,7 @@ class AvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color =
-        Color(avatarPaletteValues[(user.id - 1) % avatarPaletteValues.length]);
+        Color(avatarPaletteValues[user.id % avatarPaletteValues.length]);
     final initials = user.name
         .split(' ')
         .where((w) => w.isNotEmpty)

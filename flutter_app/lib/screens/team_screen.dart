@@ -77,7 +77,7 @@ class _TeamDialogState extends ConsumerState<_TeamDialog> {
                           color: Theme.of(context)
                               .colorScheme
                               .onSurface
-                              .withOpacity(0.5)),
+                              .withValues(alpha: 0.5)),
                     )
                   : Column(
                       children: list

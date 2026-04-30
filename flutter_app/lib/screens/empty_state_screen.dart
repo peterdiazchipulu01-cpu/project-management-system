@@ -15,7 +15,7 @@ class EmptyStateScreen extends StatelessWidget {
             color: Theme.of(context)
                 .colorScheme
                 .onSurface
-                .withOpacity(0.25),
+                .withValues(alpha: 0.25),
           ),
           const SizedBox(height: 16),
           Text(
@@ -24,7 +24,7 @@ class EmptyStateScreen extends StatelessWidget {
                   color: Theme.of(context)
                       .colorScheme
                       .onSurface
-                      .withOpacity(0.4),
+                      .withValues(alpha: 0.4),
                 ),
           ),
         ],

@@ -50,10 +50,9 @@ class ProjectSidebar extends ConsumerWidget {
               loading: () => const Center(
                   child: CircularProgressIndicator(
                       color: Colors.white38, strokeWidth: 2)),
-              error: (e, _) => Center(
+              error: (e, _) => const Center(
                   child: Text('Error',
-                      style: TextStyle(
-                          color: Colors.white38, fontSize: 12))),
+                      style: TextStyle(color: Colors.white38, fontSize: 12))),
               data: (list) => list.isEmpty
                   ? const Center(
                       child: Text(
@@ -147,7 +146,7 @@ class _ProjectItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 1),
       decoration: BoxDecoration(
         color: isSelected
-            ? AppTheme.primary.withOpacity(0.2)
+            ? AppTheme.primary.withValues(alpha: 0.2)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(6),
       ),
