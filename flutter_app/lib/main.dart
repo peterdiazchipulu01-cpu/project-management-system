@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/app_theme.dart';
 import 'core/supabase_config.dart';
 import 'providers/theme_provider.dart';
-import 'screens/home_screen.dart';
+import 'screens/dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +29,7 @@ class PmsApp extends ConsumerWidget {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeAsync.value ?? ThemeMode.light,
-      home: const HomeScreen(),
+      home: const DashboardScreen(),
     );
   }
 }
