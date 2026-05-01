@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/app_theme.dart';
 import '../providers/theme_provider.dart';
 import '../providers/project_provider.dart';
+import '../providers/settings_provider.dart';
 import '../widgets/project_sidebar.dart';
 import '../screens/empty_state_screen.dart';
 import '../screens/project_board_screen.dart';
 import '../screens/team_screen.dart';
+import '../screens/settings_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -15,6 +17,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedProject = ref.watch(selectedProjectProvider);
     final themeAsync = ref.watch(themeProvider);
+    final settings = ref.watch(settingsProvider).value ?? const AppSettings();
 
     return Scaffold(
       appBar: AppBar(
@@ -24,8 +27,7 @@ class HomeScreen extends ConsumerWidget {
         titleSpacing: 16,
         title: const Text(
           'Project Management',
-          style: TextStyle(
-              fontSize: 15, fontWeight: FontWeight.w600),
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
         actions: [
           TextButton.icon(
@@ -49,8 +51,19 @@ class HomeScreen extends ConsumerWidget {
               tooltip: mode == ThemeMode.dark
                   ? 'Switch to light mode'
                   : 'Switch to dark mode',
-              onPressed: () =>
-                  ref.read(themeProvider.notifier).toggle(),
+              onPressed: () => ref.read(themeProvider.notifier).toggle(),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined, color: Colors.white60),
+            tooltip: 'Settings',
+            onPressed: () => Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const SettingsScreen(),
+                transitionsBuilder: (_, anim, __, child) =>
+                    FadeTransition(opacity: anim, child: child),
+                transitionDuration: const Duration(milliseconds: 300),
+              ),
             ),
           ),
           const SizedBox(width: 8),
@@ -58,9 +71,9 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: Row(
         children: [
-          const SizedBox(
-            width: 220,
-            child: ProjectSidebar(),
+          SizedBox(
+            width: settings.compactSidebar ? 160 : 220,
+            child: const ProjectSidebar(),
           ),
           Expanded(
             child: selectedProject == null
