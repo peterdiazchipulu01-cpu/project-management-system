@@ -1,8 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../core/supabase_config.dart';
 import '../providers/theme_provider.dart';
 import '../providers/settings_provider.dart';
+import '../widgets/settings/settings_form.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -79,6 +81,12 @@ class SettingsScreen extends ConsumerWidget {
                               ),
                             ],
                           ),
+                        ),
+                        const SizedBox(height: 24),
+                        _sectionLabel('Company Settings'),
+                        const SizedBox(height: 12),
+                        _glassCard(
+                          child: const SettingsForm(orgId: defaultOrgId),
                         ),
                         const SizedBox(height: 24),
                         _sectionLabel('About'),
