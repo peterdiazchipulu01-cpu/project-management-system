@@ -9,6 +9,7 @@ import '../screens/empty_state_screen.dart';
 import '../screens/project_board_screen.dart';
 import '../screens/team_screen.dart';
 import '../screens/settings_screen.dart';
+import '../screens/weekly_report_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -30,6 +31,14 @@ class HomeScreen extends ConsumerWidget {
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
         actions: [
+          TextButton.icon(
+            onPressed: () => showWeeklyReportScreen(context),
+            icon: const Icon(Icons.bar_chart_outlined,
+                color: Colors.white60, size: 18),
+            label: const Text('Weekly Report',
+                style: TextStyle(color: Colors.white60, fontSize: 13)),
+          ),
+          const SizedBox(width: 4),
           TextButton.icon(
             onPressed: () => showTeamScreen(context),
             icon: const Icon(Icons.people_outline,
